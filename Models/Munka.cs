@@ -12,15 +12,15 @@ namespace Munkabeosztas_ASP_NET_Core.Models
         [Key]
         public int MunkaId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Nincs megadva a helyszín!")]
         [Display(Name = "Helyszín")]
         public string Helyszin { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Nincs megadva a dátum!")]
         [Display(Name = "Dátum")]
         public string Datum { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="Nincs megadva a leírás!")]
         [Display(Name = "Leírás")]
         public string Leiras { get; set; }
 

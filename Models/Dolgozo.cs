@@ -11,11 +11,11 @@ namespace Munkabeosztas_ASP_NET_Core.Models
         [Key]
         public int DolgozoId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Nincs megadva a családnév!")]
         [Display(Name = "Családnév")]
         public string Csaladnev { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Nincs megadva a keresztnév!")]
         [Display(Name = "Keresztnév")]
         public string Keresztnev { get; set; }
 
