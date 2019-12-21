@@ -6,7 +6,7 @@
 
 <div class="adminform-container">
     <div class="adminform-title">
-        Új munka létrehozása
+        @ViewData["Title"]
         @Html.ActionLink("[X]", "Index", "Home", null, new { @class="cancel-button" })
     </div>
     <div class="adminform-body">
@@ -26,12 +26,12 @@
             @Html.LabelFor(model => model.SelectedGepjarmu, new { @class = "labeltext" })<br />
             @Html.DropDownListFor(model => model.SelectedGepjarmu, new SelectList(Model.GepjarmuList, "Value", "Text"), new { @class = "combobox" })<br /><br />
 
-            @Html.LabelFor(model => model.SelectedDolgozo, new { @class = "labeltext" })<br />
+            @Html.LabelFor(model => model.DolgozoList, new { @class = "labeltext" })<br />
             <div class="checkbox-list">
                 @foreach(var item in Model.DolgozoList)
                 {
-                    @Html.CheckBox(item.Text, new { value = item.Value })
-                    @Html.Label(null, item.Text, new { @style = "font-weight: normal;" })<br />
+                    @Html.CheckBox(item.Csaladnev + " " + item.Keresztnev, new { value = item.DolgozoId })
+                    @Html.Label(null, item.Csaladnev + " " + item.Keresztnev, new { @style = "font-weight: normal;" })<br />
                 }
             </div><br /><br />
 

@@ -29,9 +29,6 @@ namespace Munkabeosztas_ASP_NET_Core.Models
         public IEnumerable<SelectListItem> GepjarmuList { get; set; }
 
         [Display(Name = "Dolgozók")]
-        public string SelectedDolgozo { get; set; }
-        public IEnumerable<SelectListItem> DolgozoList { get; set; }
-
-        public List<Dolgozo> DolgozoSubmitList { get; set; }
+        public List<DolgozoMunkaViewModel> DolgozoList { get; set; }
     }
 }

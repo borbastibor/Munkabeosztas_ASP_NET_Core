@@ -34,7 +34,7 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
             MunkaViewModel temp = new MunkaViewModel
             {
                 GepjarmuList = GetGepjarmuvek(),
-                DolgozoList = GetDolgozok()
+                DolgozoList = GetDolgozokWithCheck()
             };
 
             return View(temp);
@@ -166,7 +166,7 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
 
         private IEnumerable<SelectListItem> GetDolgozok()
         {
-            List<SelectListItem> soforok = _context.Dolgozok.AsNoTracking()
+            List<SelectListItem> dolgozok = _context.Dolgozok.AsNoTracking()
                     .OrderBy(n => n.Csaladnev)
                         .Select(n =>
                         new SelectListItem
@@ -174,7 +174,22 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
                             Value = n.DolgozoId.ToString(),
                             Text = n.Csaladnev + " " + n.Keresztnev
                         }).ToList();
-            return new SelectList(soforok, "Value", "Text").AsEnumerable();
+            return new SelectList(dolgozok, "Value", "Text").AsEnumerable();
+        }
+
+        private List<DolgozoMunkaViewModel> GetDolgozokWithCheck()
+        {
+            List<DolgozoMunkaViewModel> dolgozok = _context.Dolgozok.AsNoTracking()
+                .OrderBy(n => n.Csaladnev)
+                    .Select(n =>
+                    new DolgozoMunkaViewModel
+                    {
+                        DolgozoId = n.DolgozoId,
+                        Csaladnev = n.Csaladnev,
+                        Keresztnev = n.Keresztnev,
+                        IsChecked = false
+                    }).ToList();
+            return dolgozok;
         }
     }
 }
