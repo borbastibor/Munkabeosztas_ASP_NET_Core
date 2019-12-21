@@ -1,46 +1,41 @@
-﻿@model Munkabeosztas_ASP_NET_Core.Models.Munka
+﻿@model Munkabeosztas_ASP_NET_Core.Models.MunkaViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Munka szerkesztése";
 }
 
-<h1>Edit</h1>
+<div class="adminform-container">
+    <div class="adminform-title">
+        Új munka létrehozása
+        @Html.ActionLink("[X]", "Index", "Home", null, new { @class = "cancel-button" })
+    </div>
+    <div class="adminform-body">
+        @using (Html.BeginForm("Edit", "Home", FormMethod.Post))
+        {
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
-<h4>Munka</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="MunkaId" />
-            <div class="form-group">
-                <label asp-for="Helyszin" class="control-label"></label>
-                <input asp-for="Helyszin" class="form-control" />
-                <span asp-validation-for="Helyszin" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Datum" class="control-label"></label>
-                <input asp-for="Datum" class="form-control" />
-                <span asp-validation-for="Datum" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Leiras" class="control-label"></label>
-                <input asp-for="Leiras" class="form-control" />
-                <span asp-validation-for="Leiras" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GepjarmuId" class="control-label"></label>
-                <select asp-for="GepjarmuId" class="form-control" asp-items="ViewBag.GepjarmuId"></select>
-                <span asp-validation-for="GepjarmuId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+            @Html.LabelFor(model => model.Helyszin, new { @class = "labeltext" })<br />
+            @Html.TextBoxFor(model => model.Helyszin, new { @class = "textbox" })<br /><br />
+
+            @Html.LabelFor(model => model.Datum, new { @class = "labeltext" })<br />
+            @Html.TextBoxFor(model => model.Datum, new { @type = "date", @class = "textbox" })<br /><br />
+
+            @Html.LabelFor(model => model.Leiras, new { @class = "labeltext" })<br />
+            @Html.TextBoxFor(model => model.Leiras, new { @class = "textbox" })<br /><br />
+
+            @Html.LabelFor(model => model.SelectedGepjarmu, new { @class = "labeltext" })<br />
+            @Html.DropDownListFor(model => model.SelectedGepjarmu, new SelectList(Model.GepjarmuList, "Value", "Text"), new { @class = "combobox" })<br /><br />
+
+            @Html.LabelFor(model => model.SelectedDolgozo, new { @class = "labeltext" })<br />
+            <div class="checkbox-list">
+                @foreach (var item in Model.DolgozoList)
+                {
+                    @Html.CheckBox(item.Text, new { value = item.Value })
+                    @Html.Label(null, item.Text, new { @style = "font-weight: normal;" })<br />
+                }
+            </div><br /><br />
+
+            <input type="submit" class="save-submit-button" name="Save" value="Mentés" /><br />
+        }
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-

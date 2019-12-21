@@ -1,7 +1,7 @@
 ﻿@model Munkabeosztas_ASP_NET_Core.Models.MunkaViewModel
 
 @{
-    ViewData["Title"] = "Munka létrehozása";
+    ViewData["Title"] = "Új munka létrehozása";
 }
 
 <div class="adminform-container">
@@ -27,7 +27,13 @@
             @Html.DropDownListFor(model => model.SelectedGepjarmu, new SelectList(Model.GepjarmuList, "Value", "Text"), new { @class = "combobox" })<br /><br />
 
             @Html.LabelFor(model => model.SelectedDolgozo, new { @class = "labeltext" })<br />
-            @Html.DropDownListFor(model => model.SelectedDolgozo, new SelectList(Model.DolgozoList, "Value", "Text"), new { @class = "combobox" })<br /><br />
+            <div class="checkbox-list">
+                @foreach(var item in Model.DolgozoList)
+                {
+                    @Html.CheckBox(item.Text, new { value = item.Value })
+                    @Html.Label(null, item.Text, new { @style = "font-weight: normal;" })<br />
+                }
+            </div><br /><br />
 
             <input type="submit" class="save-submit-button" name="Save" value="Mentés"/><br />
          }
