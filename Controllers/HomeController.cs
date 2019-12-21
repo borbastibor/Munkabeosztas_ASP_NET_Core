@@ -31,8 +31,13 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
         // GET: Munkak/Create
         public IActionResult Create()
         {
-            ViewData["GepjarmuId"] = new SelectList(_context.Gepjarmuvek, "GepjarmuId", "Rendszam");
-            return View();
+            MunkaViewModel temp = new MunkaViewModel
+            {
+                GepjarmuList = GetGepjarmuvek(),
+                DolgozoList = GetDolgozok()
+            };
+
+            return View(temp);
         }
 
         // POST: Munkak/Create
@@ -144,6 +149,32 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        private IEnumerable<SelectListItem> GetGepjarmuvek()
+        {
+            List<SelectListItem> gepjarmuvek = _context.Gepjarmuvek.AsNoTracking()
+                    .OrderBy(n => n.Tipus)
+                        .Select(n =>
+                        new SelectListItem
+                        {
+                            Value = n.GepjarmuId.ToString(),
+                            Text = n.Tipus + " (" + n.Rendszam + ")"
+                        }).ToList();
+            return new SelectList(gepjarmuvek, "Value", "Text");
+        }
+
+        private IEnumerable<SelectListItem> GetDolgozok()
+        {
+            List<SelectListItem> soforok = _context.Dolgozok.AsNoTracking()
+                    .OrderBy(n => n.Csaladnev)
+                        .Select(n =>
+                        new SelectListItem
+                        {
+                            Value = n.DolgozoId.ToString(),
+                            Text = n.Csaladnev + " " + n.Keresztnev
+                        }).ToList();
+            return new SelectList(soforok, "Value", "Text").AsEnumerable();
         }
     }
 }

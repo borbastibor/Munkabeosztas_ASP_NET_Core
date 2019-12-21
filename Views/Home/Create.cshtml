@@ -1,4 +1,4 @@
-﻿@model Munkabeosztas_ASP_NET_Core.Models.Munka
+﻿@model Munkabeosztas_ASP_NET_Core.Models.MunkaViewModel
 
 @{
     ViewData["Title"] = "Munka létrehozása";
@@ -23,11 +23,11 @@
             @Html.LabelFor(model => model.Leiras, new { @class = "labeltext" })<br />
             @Html.TextBoxFor(model => model.Leiras, new { @class = "textbox", placeholder = "Rövid leírás a munkáról..." })<br /><br />
 
-            //@Html.LabelFor(model => model.SelectedGepjarmu, new { @class = "labeltext" })<br />
-            //@Html.DropDownListFor(model => model.SelectedGepjarmu, new SelectList(Model.GepjarmuList, "Value", "Text"), new { @class = "combobox" })<br /><br />
+            @Html.LabelFor(model => model.SelectedGepjarmu, new { @class = "labeltext" })<br />
+            @Html.DropDownListFor(model => model.SelectedGepjarmu, new SelectList(Model.GepjarmuList, "Value", "Text"), new { @class = "combobox" })<br /><br />
 
-            //@Html.LabelFor(model => model.SelectedSofor, new { @class = "labeltext" })<br />
-            //@Html.DropDownListFor(model => model.SelectedSofor, new SelectList(Model.SoforList, "Value", "Text"), new { @class = "combobox" })<br /><br />
+            @Html.LabelFor(model => model.SelectedDolgozo, new { @class = "labeltext" })<br />
+            @Html.DropDownListFor(model => model.SelectedDolgozo, new SelectList(Model.DolgozoList, "Value", "Text"), new { @class = "combobox" })<br /><br />
 
             <input type="submit" class="save-submit-button" name="Save" value="Mentés"/><br />
          }
