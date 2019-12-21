@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Munkabeosztas_ASP_NET_Core.Models.Gepjarmu>
+
+@{
+    ViewData["Title"] = "Gépjárművek";
+}
+
+@await Html.PartialAsync("_AdminMenuPartial")
+
+<div class="adminform-container">
+    <div class="adminform-title">
+        @ViewData["Title"]
+        @Html.ActionLink("[X]", "Index", "Home", null, new { @class = "cancel-button" })
+    </div>
+    <div class="adminform-body">
+        <p>@Html.ActionLink("Új gépjármű felvétele", "Create", "Gepjarmuvek", null, new { @class = "create-item-button" })</p>
+        <table class="norm_Table">
+            <thead>
+                <tr>
+                    <th class="norm_Head">@Html.DisplayNameFor(model => model.Tipus)</th>
+                    <th class="norm_Head">@Html.DisplayNameFor(model => model.Rendszam)</th>
+                    <th class="norm_Head">Lehetőségek</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="norm_Cell">@Html.DisplayFor(modelItem => item.Tipus)</td>
+                        <td class="norm_Cell">@Html.DisplayFor(modelItem => item.Rendszam)</td>
+                        <td class="norm_Cell">
+                            @Html.ActionLink("Szerkeszt", "Edit", "Gepjarmuvek", new { @id = @item.GepjarmuId })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

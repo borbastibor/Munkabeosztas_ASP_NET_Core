@@ -1,0 +1,34 @@
+﻿@model Munkabeosztas_ASP_NET_Core.Models.Dolgozo
+
+@{
+    ViewData["Title"] = "Dolgozó szerkesztése";
+}
+
+@await Html.PartialAsync("_AdminMenuPartial")
+
+<div class="adminform-container">
+    <div class="adminform-title">
+        @ViewData["Title"]
+        @Html.ActionLink("[X]", "Index", "Dolgozok", null, new { @class = "cancel-button" })
+    </div>
+    <div class="adminform-body">
+        @using (Html.BeginForm("Edit", "Dolgozok", FormMethod.Post))
+        {
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+            @Html.LabelFor(model => model.Csaladnev, new { @class = "labeltext" })<br />
+            @Html.TextBoxFor(model => model.Csaladnev, new { @class = "textbox" })<br /><br />
+
+            @Html.LabelFor(model => model.Keresztnev, new { @class = "labeltext" })<br />
+            @Html.TextBoxFor(model => model.Keresztnev, new { @class = "textbox" })<br /><br />
+
+            @Html.HiddenFor(model => model.DolgozoId)
+
+            <input type="submit" class="save-submit-button" name="Save" value="Mentés" class="btn-submit" /><br />
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,24 @@
+﻿@model Munkabeosztas_ASP_NET_Core.Models.Adminuser
+
+@{
+    ViewData["Title"] = "Admin felhasználó törlése";
+}
+
+<div class="adminform-container">
+    <div class="adminform-title">
+        @ViewData["Title"]
+        @Html.ActionLink("[X]", "Index", "Adminusers", null, new { @class = "cancel-button" })
+    </div>
+    <div class="adminform-body">
+        <p style="font-size: 14px; font-weight: bold;">Biztosan törölni akarja?</p>
+        <p style="font-size: 14px;">
+            <strong>@Html.DisplayNameFor(model => model.Username): </strong>@Html.DisplayFor(model => model.Username)
+        </p>
+        <br />
+        @using (Html.BeginForm("Delete", "Adminusers", FormMethod.Post))
+        {
+            @Html.HiddenFor(model => model.AdminuserId)
+            <input type="submit" value="Törlés" class="delete-submit-button" />
+        }
+    </div>
+</div>

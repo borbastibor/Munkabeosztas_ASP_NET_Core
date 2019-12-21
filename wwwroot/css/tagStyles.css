@@ -1,0 +1,56 @@
+.tag-container {
+    padding: 0px;
+    margin: 5px 5px;
+    background-color: white;
+    border-radius:  4px;
+    border: none;
+}
+
+.tag-title-container {
+    padding: 0px;
+    margin: 0px;
+    border-radius: 4px 4px 0px 0px;
+    background-color: blue;
+    color: white;
+}
+
+.tag-title-menuitem:link, .tag-title-menuitem:visited {
+    background-color: rgb(0, 0, 250);
+    color: white;
+    padding: 2px;
+    margin: 0px;
+    width: 95%;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-flex;
+    justify-content: center;
+}
+
+.tag-title-menuitem:hover, .tag-title-menuitem:active {
+    background-color: rgb(0, 130, 250);
+}
+
+.tag-title-table {
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+    border-collapse: collapse;
+}
+
+.tag-title-tablecell {
+    padding: 0px;
+    margin: 0px;
+    width: 50%;
+}
+
+.tag-body {
+    padding: 3px;
+    margin: 0px;
+    border-radius: 4px 4px 4px 4px;
+    background-color: white;
+    color: black;
+    font-size: 12px;
+    word-wrap: normal;
+}

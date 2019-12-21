@@ -1,0 +1,45 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    font-family: 'Lucida Sans Unicode';
+    font-size: 12px;
+    background-color: rgb(150,150,150);
+}
+
+/* A szerkesztés, törlés és létrehozás lapok stílusai */
+.adminform-container {
+    padding: 0px;
+    margin: 15px 25%;
+    background-color: white;
+    border-radius:  6px;
+    border: none;
+    box-shadow: 5px 10px 8px rgb(75,75,75);
+    position: relative;
+}
+
+.adminform-title {
+    padding: 5px;
+    margin: 0px;
+    border-radius: 6px 6px 0px 0px;
+    background-color: blue;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+}
+
+.adminform-body {
+    padding: 10px;
+    margin: 0px;
+    border-radius: 0px 0px 6px 6px;
+    background-color: white;
+    color: black;
+    font-size: 12px;
+    word-wrap: normal;
+}
+
+.text-danger {
+    color: red;
+    font-size: 12px;
+}

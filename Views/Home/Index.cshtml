@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Munkabeosztás";
+}
+
+@await  Html.PartialAsync("_AdminMenuPartial")
+<a class="create-button" href="Home/Create">+</a>
+
+<table class ="calendar-container">
+    <tr>
+        @{ 
+            DateTime currentdate = DateTime.Now;
+
+            for(int i = 0; i < 7; i++)
+            {
+                var newdate = currentdate.AddDays(i);
+                string headercolor = "";
+                switch(newdate.DayOfWeek)
+                {
+                    case DayOfWeek.Sunday:
+                        {
+                            headercolor = "style=\"background-color: red;\"";
+                            break;
+                        }
+
+
+                    case DayOfWeek.Saturday:
+                        {
+                            headercolor = "style=\"background-color: green;\"";
+                            break;
+                        }
+                        
+                }
+                <th class="calendar-header" @Html.Raw(headercolor)>
+                    @newdate.ToString("yyyy-MM-dd")
+                    (@newdate.ToString("dddd"))
+                </th>
+            }
+        }
+    </tr>
+</table>

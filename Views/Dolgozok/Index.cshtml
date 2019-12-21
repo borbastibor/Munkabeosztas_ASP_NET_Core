@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Munkabeosztas_ASP_NET_Core.Models.Dolgozo>
+
+@{
+    ViewData["Title"] = "Dolgozók";
+}
+
+@await Html.PartialAsync("_AdminMenuPartial")
+
+<div class="adminform-container">
+    <div class="adminform-title">
+        @ViewData["Title"]
+        @Html.ActionLink("[X]", "Index", "Home", null, new { @class = "cancel-button" })
+    </div>
+    <div class="adminform-body">
+        <p>@Html.ActionLink("Új dolgozó felvétele", "Create", "Dolgozok", null, new { @class = "create-item-button" })</p>
+        <table class="norm_Table">
+            <thead>
+                <tr>
+                    <th class="norm_Head">@Html.DisplayNameFor(model => model.Csaladnev)</th>
+                    <th class="norm_Head">@Html.DisplayNameFor(model => model.Keresztnev)</th>
+                    <th class="norm_Head">Lehetőségek</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="norm_Cell">@Html.DisplayFor(modelItem => item.Csaladnev)</td>
+                        <td class="norm_Cell">@Html.DisplayFor(modelItem => item.Keresztnev)</td>
+                        <td class="norm_Cell">
+                            @Html.ActionLink("Szerkeszt", "Edit", "Dolgozok", new { @id = @item.DolgozoId })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

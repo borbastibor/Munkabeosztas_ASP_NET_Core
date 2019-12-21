@@ -1,0 +1,29 @@
+﻿@model Munkabeosztas_ASP_NET_Core.Models.Adminuser
+
+@{
+    ViewData["Title"] = "Új admin felhasználó felvétele";
+}
+
+@await Html.PartialAsync("_AdminMenuPartial")
+
+<div class="adminform-container">
+    <div class="adminform-title">
+        @ViewData["Title"]
+        @Html.ActionLink("[X]", "Index", "Adminusers", null, new { @class = "cancel-button" })
+    </div>
+    <div class="adminform-body">
+        @using (Html.BeginForm("Create", "Adminusers", FormMethod.Post))
+        {
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+            @Html.LabelFor(model => model.Username, new { @class = "labeltext" })<br />
+            @Html.TextBoxFor(model => model.Username, new { @class = "textbox", placeholder = "Írja be a felhasználónevet..." })<br /><br />
+
+            <input type="submit" class="save-submit-button" name="Save" value="Mentés" /><br />
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

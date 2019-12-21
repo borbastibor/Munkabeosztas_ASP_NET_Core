@@ -1,0 +1,46 @@
+﻿@model Munkabeosztas_ASP_NET_Core.Models.Munka
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Munka</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="MunkaId" />
+            <div class="form-group">
+                <label asp-for="Helyszin" class="control-label"></label>
+                <input asp-for="Helyszin" class="form-control" />
+                <span asp-validation-for="Helyszin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Datum" class="control-label"></label>
+                <input asp-for="Datum" class="form-control" />
+                <span asp-validation-for="Datum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Leiras" class="control-label"></label>
+                <input asp-for="Leiras" class="form-control" />
+                <span asp-validation-for="Leiras" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GepjarmuId" class="control-label"></label>
+                <select asp-for="GepjarmuId" class="form-control" asp-items="ViewBag.GepjarmuId"></select>
+                <span asp-validation-for="GepjarmuId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

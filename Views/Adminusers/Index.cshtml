@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Munkabeosztas_ASP_NET_Core.Models.Adminuser>
+
+@{
+    ViewData["Title"] = "Admin felhasználók";
+}
+
+@await Html.PartialAsync("_AdminMenuPartial")
+
+<div class="adminform-container">
+    <div class="adminform-title">
+        @ViewData["Title"]
+        @Html.ActionLink("[X]", "Index", "Home", null, new { @class = "cancel-button" })
+    </div>
+    <div class="adminform-body">
+        <p>@Html.ActionLink("Új admin felhasználó felvétele", "Create", "Adminusers", null, new { @class = "create-item-button" })</p>
+        <table class="norm_Table">
+            <thead>
+                <tr>
+                    <th class="norm_Head">@Html.DisplayNameFor(model => model.Username)</th>
+                    <th class="norm_Head">Lehetőségek</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="norm_Cell">@Html.DisplayFor(modelItem => item.Username)</td>
+                        <td class="norm_Cell">
+                            @Html.ActionLink("Szerkeszt", "Edit", "Adminusers", new { @id = @item.AdminuserId })|
+                            @Html.ActionLink("Eltávolít", "Delete", "Adminusers", new { @id = @item.AdminuserId })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

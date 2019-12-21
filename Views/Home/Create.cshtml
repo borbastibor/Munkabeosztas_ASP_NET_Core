@@ -1,0 +1,35 @@
+﻿@model Munkabeosztas_ASP_NET_Core.Models.Munka
+
+@{
+    ViewData["Title"] = "Munka létrehozása";
+}
+
+<div class="adminform-container">
+    <div class="adminform-title">
+        Új munka létrehozása
+        @Html.ActionLink("[X]", "Index", "Home", null, new { @class="cancel-button" })
+    </div>
+    <div class="adminform-body">
+        @using (Html.BeginForm("Create", "Home", FormMethod.Post))
+        {
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+            @Html.LabelFor(model => model.Helyszin, new { @class = "labeltext" })<br />
+            @Html.TextBoxFor(model => model.Helyszin, new { @class = "textbox", placeholder = "Írja be a helyszínt..." })<br /><br />
+
+            @Html.LabelFor(model => model.Datum, new { @class = "labeltext" })<br />
+            @Html.TextBoxFor(model => model.Datum, new { @type = "date", @class = "textbox" })<br /><br />
+
+            @Html.LabelFor(model => model.Leiras, new { @class = "labeltext" })<br />
+            @Html.TextBoxFor(model => model.Leiras, new { @class = "textbox", placeholder = "Rövid leírás a munkáról..." })<br /><br />
+
+            //@Html.LabelFor(model => model.SelectedGepjarmu, new { @class = "labeltext" })<br />
+            //@Html.DropDownListFor(model => model.SelectedGepjarmu, new SelectList(Model.GepjarmuList, "Value", "Text"), new { @class = "combobox" })<br /><br />
+
+            //@Html.LabelFor(model => model.SelectedSofor, new { @class = "labeltext" })<br />
+            //@Html.DropDownListFor(model => model.SelectedSofor, new SelectList(Model.SoforList, "Value", "Text"), new { @class = "combobox" })<br /><br />
+
+            <input type="submit" class="save-submit-button" name="Save" value="Mentés"/><br />
+         }
+    </div>
+</div>

@@ -1,0 +1,32 @@
+﻿@model Munkabeosztas_ASP_NET_Core.Models.Gepjarmu
+
+@{
+    ViewData["Title"] = "Új gépjármű felvétele";
+}
+
+@await Html.PartialAsync("_AdminMenuPartial")
+
+<div class="adminform-container">
+    <div class="adminform-title">
+        @ViewData["Title"]
+        @Html.ActionLink("[X]", "Index", "Gepjarmuvek", null, new { @class = "cancel-button" })
+    </div>
+    <div class="adminform-body">
+        @using (Html.BeginForm("Create", "Gepjarmuvek", FormMethod.Post))
+        {
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+            @Html.LabelFor(model => model.Tipus, new { @class = "labeltext" })<br />
+            @Html.TextBoxFor(model => model.Tipus, new { @class = "textbox", placeholder = "Írja be a típust..." })<br /><br />
+
+            @Html.LabelFor(model => model.Rendszam, new { @class = "labeltext" })<br />
+            @Html.TextBoxFor(model => model.Rendszam, new { @class = "textbox", placeholder = "Írja be a Rendszámot (ABC-123)..." })<br /><br />
+
+            <input type="submit" class="save-submit-button" name="Save" value="Mentés" /><br />
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
