@@ -23,7 +23,7 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
         public async Task<IActionResult> Index()
         {
             var munkakDbContext = _context.Munkak.Include(m => m.Gepjarmu);
-
+            
             return View(await munkakDbContext.ToListAsync());
         }
 

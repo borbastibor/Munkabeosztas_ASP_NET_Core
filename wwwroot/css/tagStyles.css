@@ -2,14 +2,13 @@
     padding: 0px;
     margin: 5px 5px;
     background-color: white;
-    border-radius:  4px;
+    border-radius:  0px 0px 4px 4px;
     border: none;
 }
 
 .tag-title-container {
     padding: 0px;
     margin: 0px;
-    border-radius: 4px 4px 0px 0px;
     background-color: blue;
     color: white;
 }
@@ -36,6 +35,7 @@
     width: 100%;
     padding: 0px;
     margin: 0px;
+    text-align: center;
     border-collapse: collapse;
 }
 
@@ -46,9 +46,9 @@
 }
 
 .tag-body {
-    padding: 3px;
+    padding: 2px;
     margin: 0px;
-    border-radius: 4px 4px 4px 4px;
+    border-radius: 0px 0px 4px 4px;
     background-color: white;
     color: black;
     font-size: 12px;

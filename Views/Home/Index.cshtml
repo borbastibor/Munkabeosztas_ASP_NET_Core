@@ -1,4 +1,4 @@
-﻿@model ICollection<Munkabeosztas_ASP_NET_Core.Models.Munka>
+﻿@model IEnumerable<Munkabeosztas_ASP_NET_Core.Models.Munka>
 @{
     ViewData["Title"] = "Munkabeosztás";
 }
@@ -9,7 +9,7 @@
 <table class="calendar-container">
     <tr>
         @{
-            DateTime currentdate = DateTime.Now;
+            DateTime currentdate = DateTime.Now.Date;
 
             for (int i = 0; i < 7; i++)
             {
@@ -41,32 +41,37 @@
     <tr>
         @for (int i = 0; i < 7; i++)
         {
-            <td class="calendar-cell">
-                @foreach (var item in Model)
+        <td class="calendar-cell">
+            @foreach (var item in Model)
+            {
+                var itemdate = DateTime.ParseExact(item.Datum, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+                if (DateTime.Compare(itemdate, currentdate.AddDays(i)) == 0)
                 {
-                    DateTime itemdate = DateTime.Parse(item.Datum);
-                    if (DateTime.Compare(itemdate, currentdate) == 0)
-                    {
-                        <div class="tag-container">
-                            <div class="tag-title-container">
-                                <table class="tag-title-table">
-                                    <tr>
-                                        <td class="tag-title-tablecell">
-                                            @Html.ActionLink("Szerkeszt", "Edit", "Home", new { @class = "tag-title-menuitem", @id = @item.MunkaId })
-                                            @Html.ActionLink("Eltávolít", "Delete", "Home", new { @class = "tag-title-menuitem", @id = @item.MunkaId })
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="tag-body">
-                                @Html.Display(item.Helyszin)<br />
-                                @Html.Display(item.Leiras)<br />
-                                @Html.Display(item.Gepjarmu.Tipus + " (" + item.Gepjarmu.Rendszam + ")")
-                            </div>
-                        </div>
-                    }
+                    @Html.Raw("<div class=\"tag-container\">")
+                    @Html.Raw("<div class=\"tag-title-container\">")
+                    @Html.Raw("<table class=\"tag-title-table\">")
+                    @Html.Raw("<tr>")
+                    @Html.Raw("<td class=\"tag-title-tablecell\">")
+                    @Html.ActionLink("Szerkeszt", "Edit", "Home", null, new { @class = "tag-title-menuitem", @id = item.MunkaId })
+                    @Html.Raw("</td>")
+                    @Html.Raw("<td class=\"tag-title-tablecell\">")
+                    @Html.ActionLink("Eltávolít", "Delete", "Home", null, new { @class = "tag-title-menuitem", @id = item.MunkaId })
+                    @Html.Raw("</td>")
+                    @Html.Raw("</tr>")
+                    @Html.Raw("</table>")
+                    @Html.Raw("</div>")
+                    @Html.Raw("<div class=\"tag-body\">")
+                    @Html.DisplayFor(modelItem => item.Helyszin)<br />
+                    @Html.DisplayFor(modelItem => item.Leiras)<br />
+                    @Html.DisplayFor(modelItem => item.Gepjarmu.Tipus)
+                    @Html.Raw(" (")
+                    @Html.DisplayFor(modelItem => item.Gepjarmu.Rendszam)
+                    @Html.Raw(")")
+                    @Html.Raw("</div>")
+                    @Html.Raw("</div>")
                 }
-            </td>
+            }
+        </td>
         }
     </tr>
 </table>
