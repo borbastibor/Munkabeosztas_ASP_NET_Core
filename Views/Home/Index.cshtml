@@ -1,20 +1,21 @@
-﻿@{
+﻿@model ICollection<Munkabeosztas_ASP_NET_Core.Models.Munka>
+@{
     ViewData["Title"] = "Munkabeosztás";
 }
 
-@await  Html.PartialAsync("_AdminMenuPartial")
+@await Html.PartialAsync("_AdminMenuPartial")
 <a class="create-button" href="Home/Create">+</a>
 
-<table class ="calendar-container">
+<table class="calendar-container">
     <tr>
-        @{ 
+        @{
             DateTime currentdate = DateTime.Now;
 
-            for(int i = 0; i < 7; i++)
+            for (int i = 0; i < 7; i++)
             {
                 var newdate = currentdate.AddDays(i);
                 string headercolor = "";
-                switch(newdate.DayOfWeek)
+                switch (newdate.DayOfWeek)
                 {
                     case DayOfWeek.Sunday:
                         {
@@ -28,13 +29,44 @@
                             headercolor = "style=\"background-color: green;\"";
                             break;
                         }
-                        
+
                 }
                 <th class="calendar-header" @Html.Raw(headercolor)>
                     @newdate.ToString("yyyy-MM-dd")
                     (@newdate.ToString("dddd"))
                 </th>
             }
+        }
+    </tr>
+    <tr>
+        @for (int i = 0; i < 7; i++)
+        {
+            <td class="calendar-cell">
+                @foreach (var item in Model)
+                {
+                    DateTime itemdate = DateTime.Parse(item.Datum);
+                    if (DateTime.Compare(itemdate, currentdate) == 0)
+                    {
+                        <div class="tag-container">
+                            <div class="tag-title-container">
+                                <table class="tag-title-table">
+                                    <tr>
+                                        <td class="tag-title-tablecell">
+                                            @Html.ActionLink("Szerkeszt", "Edit", "Home", new { @class = "tag-title-menuitem", @id = @item.MunkaId })
+                                            @Html.ActionLink("Eltávolít", "Delete", "Home", new { @class = "tag-title-menuitem", @id = @item.MunkaId })
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="tag-body">
+                                @Html.Display(item.Helyszin)<br />
+                                @Html.Display(item.Leiras)<br />
+                                @Html.Display(item.Gepjarmu.Tipus + " (" + item.Gepjarmu.Rendszam + ")")
+                            </div>
+                        </div>
+                    }
+                }
+            </td>
         }
     </tr>
 </table>

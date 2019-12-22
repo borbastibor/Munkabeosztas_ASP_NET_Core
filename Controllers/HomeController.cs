@@ -22,8 +22,9 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
         // GET: Munkak
         public async Task<IActionResult> Index()
         {
-            var munkabeosztasDbContext = _context.Munkak.Include(m => m.Gepjarmu);
-            return View(await munkabeosztasDbContext.ToListAsync());
+            var munkakDbContext = _context.Munkak.Include(m => m.Gepjarmu);
+
+            return View(await munkakDbContext.ToListAsync());
         }
 
         // GET: Munkak/Create
