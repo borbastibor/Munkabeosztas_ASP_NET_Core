@@ -1,9 +1,9 @@
 ﻿<div class="dropdown">
     <button class="dropbutton">M</button>
     <div class="dropdown-content">
-        <a href="Home/index">Munkák</a>
-        <a href="Dolgozok/index">Dolgozók</a>
-        <a href="Gepjarmuvek/index">Gépjárművek</a>
-        <a href="Adminusers/index">Admin felhasználók</a>
+        @Html.ActionLink("Munkák", "Index", "Home", null)
+        @Html.ActionLink("Dolgozók", "Index", "Dolgozok", null)
+        @Html.ActionLink("Gépjárművek", "Index", "Gepjarmuvek", null)
+        @Html.ActionLink("Admin felhasználók", "Index", "Adminusers", null)
     </div>
 </div>

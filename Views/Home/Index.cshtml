@@ -4,7 +4,7 @@
 }
 
 @await Html.PartialAsync("_AdminMenuPartial")
-<a class="create-button" href="Home/Create">+</a>
+@Html.ActionLink("+", "Create", "Home", null, new { @class = "create-button" })
 
 <table class="calendar-container">
     <tr>
@@ -66,7 +66,13 @@
                     @Html.DisplayFor(modelItem => item.Gepjarmu.Tipus)
                     @Html.Raw(" (")
                     @Html.DisplayFor(modelItem => item.Gepjarmu.Rendszam)
-                    @Html.Raw(")")
+                    @Html.Raw(")")<br />
+                    @foreach (var dolgozoitem in item.DolgozoMunkak)
+                    {
+                        @Html.Display(dolgozoitem.Dolgozo.Csaladnev)
+                        @Html.Raw(" ")
+                        @Html.Display(dolgozoitem.Dolgozo.Keresztnev)<br />
+                    }
                     @Html.Raw("</div>")
                     @Html.Raw("</div>")
                 }
