@@ -29,6 +29,6 @@ namespace Munkabeosztas_ASP_NET_Core.Models
         [ForeignKey("GepjarmuId")]
         public virtual Gepjarmu Gepjarmu { get; set; }
 
-        public virtual ICollection<DolgozoMunka> DolgozoMunkak { get; set; }
+        public List<DolgozoMunka> DolgozoMunkak { get; set; }
     }
 }

@@ -30,7 +30,7 @@
             <div class="checkbox-list">
                 @foreach(var item in Model.DolgozoList)
                 {
-                    @Html.CheckBox(item.Csaladnev + " " + item.Keresztnev, new { value = item.DolgozoId })
+                    @Html.CheckBox(item.DolgozoId.ToString(), item.IsChecked)
                     @Html.Label(null, item.Csaladnev + " " + item.Keresztnev, new { @style = "font-weight: normal;" })<br />
                 }
             </div><br /><br />

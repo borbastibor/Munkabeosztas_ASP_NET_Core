@@ -45,16 +45,42 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MunkaId,Helyszin,Datum,Leiras,GepjarmuId")] Munka munka)
+        public async Task<IActionResult> Create(MunkaViewModel munka)
         {
             if (ModelState.IsValid)
             {
+                Munka ujmunka = new Munka
+                {
+                    Helyszin = munka.Helyszin,
+                    Leiras = munka.Leiras,
+                    Datum = munka.Datum,
+                    GepjarmuId = int.Parse(munka.SelectedGepjarmu),
+                    Gepjarmu = _context.Gepjarmuvek.Find(int.Parse(munka.SelectedGepjarmu))
+                };
+                _context.Add(munka);
+                await _context.SaveChangesAsync();
+                foreach (var item in munka.DolgozoList)
+                {
+                    if (item.IsChecked)
+                    {
+                        DolgozoMunka relship = new DolgozoMunka
+                        {
+                            DolgozoId = item.DolgozoId,
+                            Dolgozo = new Dolgozo
+                            {
+                                DolgozoId = item.DolgozoId,
+                                Csaladnev = item.Csaladnev,
+                                Keresztnev = item.Keresztnev
+                            }
+                        };
+                        ujmunka.DolgozoMunkak.Add()
+                    }
+                }
                 _context.Add(munka);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GepjarmuId"] = new SelectList(_context.Gepjarmuvek, "GepjarmuId", "Rendszam", munka.GepjarmuId);
-            return View(munka);
+            return View();
         }
 
         // GET: Munkak/Edit/5
@@ -191,5 +217,6 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
                     }).ToList();
             return dolgozok;
         }
+
     }
 }

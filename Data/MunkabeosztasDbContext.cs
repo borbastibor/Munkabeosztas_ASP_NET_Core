@@ -8,7 +8,6 @@ namespace Munkabeosztas_ASP_NET_Core.Data
         public DbSet<Dolgozo> Dolgozok { get; set; }
         public DbSet<Gepjarmu> Gepjarmuvek { get; set; }
         public DbSet<Munka> Munkak { get; set; }
-        public DbSet<DolgozoMunka> DolgozoMunkak { get; set; }
         public DbSet<Adminuser> Adminusers { get; set; }
 
         public MunkabeosztasDbContext(DbContextOptions<MunkabeosztasDbContext> options) : base(options)
@@ -21,14 +20,14 @@ namespace Munkabeosztas_ASP_NET_Core.Data
             .HasKey(t => new { t.DolgozoId, t.MunkaId });
 
             modelBuilder.Entity<DolgozoMunka>()
-                .HasOne(dm => dm.Dolgozo)
-                .WithMany(d => d.DolgozoMunkak)
-                .HasForeignKey(dm => dm.DolgozoId);
+                .HasOne(pt => pt.Dolgozo)
+                .WithMany(p => p.DolgozoMunkak)
+                .HasForeignKey(pt => pt.DolgozoId);
 
             modelBuilder.Entity<DolgozoMunka>()
-                .HasOne(dm => dm.Munka)
-                .WithMany(m => m.DolgozoMunkak)
-                .HasForeignKey(dm => dm.MunkaId);
+                .HasOne(pt => pt.Munka)
+                .WithMany(t => t.DolgozoMunkak)
+                .HasForeignKey(pt => pt.MunkaId);
         }
     }
 }
