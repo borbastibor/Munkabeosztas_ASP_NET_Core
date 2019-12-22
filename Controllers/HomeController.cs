@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Munkabeosztas_ASP_NET_Core.Data;
 using Munkabeosztas_ASP_NET_Core.Models;
 
@@ -58,25 +56,20 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
                     Gepjarmu = _context.Gepjarmuvek.Find(int.Parse(munka.SelectedGepjarmu))
                 };
                 _context.Add(munka);
-                await _context.SaveChangesAsync();
                 foreach (var item in munka.DolgozoList)
                 {
                     if (item.IsChecked)
                     {
-                        DolgozoMunka relship = new DolgozoMunka
+                        var relship = new DolgozoMunka
                         {
+                            MunkaId = munka.MunkaId,
+                            Munka = _context.Munkak.Find(munka.MunkaId),
                             DolgozoId = item.DolgozoId,
-                            Dolgozo = new Dolgozo
-                            {
-                                DolgozoId = item.DolgozoId,
-                                Csaladnev = item.Csaladnev,
-                                Keresztnev = item.Keresztnev
-                            }
+                            Dolgozo = _context.Dolgozok.Find(item.DolgozoId)
                         };
-                        //ujmunka.DolgozoMunkak.Add()
+                        _context.Set<DolgozoMunka>().Add(relship);
                     }
                 }
-                _context.Add(munka);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

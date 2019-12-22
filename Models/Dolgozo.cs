@@ -19,6 +19,6 @@ namespace Munkabeosztas_ASP_NET_Core.Models
         [Display(Name = "Keresztnév")]
         public string Keresztnev { get; set; }
 
-        public List<DolgozoMunka> DolgozoMunkak { get; set; }
+        public List<DolgozoMunka> DolgozoMunkak { get; set; } = new List<DolgozoMunka>();
     }
 }
