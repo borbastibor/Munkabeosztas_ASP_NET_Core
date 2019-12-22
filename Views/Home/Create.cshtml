@@ -28,10 +28,13 @@
 
             @Html.LabelFor(model => model.DolgozoList, new { @class = "labeltext" })<br />
             <div class="checkbox-list">
-                @foreach(var item in Model.DolgozoList)
+                @for (var i = 0; i < Model.DolgozoList.Count(); i++)
                 {
-                    @Html.CheckBox(item.DolgozoId.ToString(), item.IsChecked)
-                    @Html.Label(null, item.Csaladnev + " " + item.Keresztnev, new { @style = "font-weight: normal;" })<br />
+                    @Html.HiddenFor(model => model.DolgozoList[i].Csaladnev)
+                    @Html.HiddenFor(model => model.DolgozoList[i].Keresztnev)
+                    @Html.HiddenFor(model => model.DolgozoList[i].DolgozoId)
+                    @Html.CheckBoxFor(model => model.DolgozoList[i].IsChecked)
+                    @Html.Label(null, Model.DolgozoList[i].Csaladnev + " " + Model.DolgozoList[i].Keresztnev, new { @style = "font-weight: normal;" })<br />
                 }
             </div><br /><br />
 

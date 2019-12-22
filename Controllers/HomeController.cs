@@ -55,25 +55,37 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
                     GepjarmuId = int.Parse(munka.SelectedGepjarmu),
                     Gepjarmu = _context.Gepjarmuvek.Find(int.Parse(munka.SelectedGepjarmu))
                 };
-                _context.Add(munka);
+                _context.Set<Munka>().Add(ujmunka);
+                await _context.SaveChangesAsync();
                 foreach (var item in munka.DolgozoList)
                 {
                     if (item.IsChecked)
                     {
                         var relship = new DolgozoMunka
                         {
-                            MunkaId = munka.MunkaId,
-                            Munka = _context.Munkak.Find(munka.MunkaId),
+                            MunkaId = ujmunka.MunkaId,
+                            Munka = _context.Munkak.Find(ujmunka.MunkaId),
                             DolgozoId = item.DolgozoId,
                             Dolgozo = _context.Dolgozok.Find(item.DolgozoId)
                         };
                         _context.Set<DolgozoMunka>().Add(relship);
+                        var dolgozo = _context.Dolgozok.Find(item.DolgozoId);
+                        if (dolgozo != null)
+                        {
+                            dolgozo.DolgozoMunkak.Add(relship);
+                            _context.Set<Dolgozo>().Update(dolgozo);
+                        } else
+                        {
+                            return NotFound();
+                        }
+                        ujmunka.DolgozoMunkak.Add(relship);
+                        _context.Munkak.Update(ujmunka);
                     }
                 }
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View();
+            return View(munka);
         }
 
         // GET: Munkak/Edit/5
