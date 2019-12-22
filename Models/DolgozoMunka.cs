@@ -10,7 +10,7 @@ namespace Munkabeosztas_ASP_NET_Core.Models
         public int DolgozoId { get; set; }
         public Dolgozo Dolgozo { get; set; }
 
-        public string MunkaId { get; set; }
+        public int MunkaId { get; set; }
         public Munka Munka { get; set; }
     }
 }

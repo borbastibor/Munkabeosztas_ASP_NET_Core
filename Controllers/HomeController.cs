@@ -73,7 +73,7 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
                                 Keresztnev = item.Keresztnev
                             }
                         };
-                        ujmunka.DolgozoMunkak.Add()
+                        //ujmunka.DolgozoMunkak.Add()
                     }
                 }
                 _context.Add(munka);
