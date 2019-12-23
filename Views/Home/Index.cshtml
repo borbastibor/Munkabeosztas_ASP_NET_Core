@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Munkabeosztas_ASP_NET_Core.Models.MunkaListViewModel>
+﻿@model IEnumerable<Munkabeosztas_ASP_NET_Core.Models.Munka>
 @{
     ViewData["Title"] = "Munkabeosztás";
 }
@@ -67,7 +67,7 @@
                     @Html.Raw(" (")
                     @Html.DisplayFor(modelItem => item.Gepjarmu.Rendszam)
                     @Html.Raw(")")<br />
-                    @foreach (var dolgozoitem in item.DolgozoList)
+                    @foreach (var dolgozoitem in item.DolgozoMunkak)
                     {
                         @Html.Display(dolgozoitem.Dolgozo.Csaladnev)
                         @Html.Raw(" ")

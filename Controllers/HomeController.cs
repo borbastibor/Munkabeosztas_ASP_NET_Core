@@ -22,26 +22,12 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
         // GET: Munkak
         public async Task<IActionResult> Index()
         {
-            var munkakDbContext = _context.Munkak
+            var listview = _context.Munkak
                 .Include(m => m.Gepjarmu)
-                .Include(m => m.DolgozoMunkak).ToList();
-            List<MunkaListViewModel> retListView = new List<MunkaListViewModel>();
-            foreach (var item in munkakDbContext)
-            {
-                MunkaListViewModel temp = new MunkaListViewModel
-                {
-                    MunkaId = item.MunkaId,
-                    Datum = item.Datum,
-                    Helyszin = item.Helyszin,
-                    Leiras = item.Leiras,
-                    Gepjarmu = item.Gepjarmu,
-                    GepjarmuId = item.GepjarmuId,
-                    DolgozoList = _context.Dolgozok
-                };
-                retListView.Add(temp);
-            }
+                .Include(m => m.DolgozoMunkak).ThenInclude(dm => dm.Dolgozo);
+            
             HttpContext.Response.Headers.Add("refresh", "10; url=" + Url.Action("Index"));
-            return View(retListView);
+            return View(await listview.ToListAsync());
         }
 
         // GET: Munkak/Create
