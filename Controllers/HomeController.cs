@@ -135,7 +135,7 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
         // POST: Munkak/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MunkaId,Helyszin,Datum,Leiras,GepjarmuId")] Munka munka)
+        public async Task<IActionResult> Edit(int id, MunkaViewModel munka)
         {
             if (id != munka.MunkaId)
             {
@@ -144,14 +144,37 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
 
             if (ModelState.IsValid)
             {
+                Munka temp = new Munka
+                {
+                    MunkaId = munka.MunkaId,
+                    Helyszin = munka.Helyszin,
+                    Leiras = munka.Leiras,
+                    Datum = munka.Datum,
+                    Gepjarmu = _context.Gepjarmuvek.Find(int.Parse(munka.SelectedGepjarmu)),
+                    GepjarmuId = int.Parse(munka.SelectedGepjarmu)
+                };
+                foreach (var item in munka.DolgozoList)
+                {
+                    if (item.IsChecked)
+                    {
+                        var relship = new DolgozoMunka
+                        {
+                            MunkaId = munka.MunkaId,
+                            Munka = _context.Munkak.Find(munka.MunkaId),
+                            DolgozoId = item.DolgozoId,
+                            Dolgozo = _context.Dolgozok.Find(item.DolgozoId)
+                        };
+                        temp.DolgozoMunkak.Add(relship);
+                    }
+                }
                 try
                 {
-                    _context.Update(munka);
+                    _context.Update(temp);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MunkaExists(munka.MunkaId))
+                    if (!MunkaExists(temp.MunkaId))
                     {
                         return NotFound();
                     }
@@ -162,7 +185,6 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GepjarmuId"] = new SelectList(_context.Gepjarmuvek, "GepjarmuId", "Rendszam", munka.GepjarmuId);
             return View(munka);
         }
 
