@@ -166,8 +166,15 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var munka = await _context.Munkak.FindAsync(id);
-            _context.Munkak.Remove(munka);
+            var munka = await _context.Munkak
+                .Include(m => m.Gepjarmu)
+                .Include(m => m.DolgozoMunkak)
+                .ThenInclude(md => md.Dolgozo)
+                .SingleOrDefaultAsync(m => m.MunkaId == id);
+            if (munka != null)
+            {
+                _context.Munkak.Remove(munka);
+            }
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
