@@ -1,45 +1,45 @@
 ﻿@model Munkabeosztas_ASP_NET_Core.Models.Munka
-
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Munka törlése";
 }
 
-<h1>Delete</h1>
+<div class="adminform-container">
+    <div class="adminform-title">
+        @ViewData["Title"]
+        @Html.ActionLink("[X]", "Index", "Home", null, new { @class = "cancel-button" })
+    </div>
+    <div class="adminform-body">
+        <h3>Biztos törölni akarja az alábbi munkát?</h3>
+        <dl>
+            <dt><strong>@Html.DisplayNameFor(model => model.Helyszin)</strong></dt>
+            <dd>@Html.DisplayFor(model => model.Helyszin)</dd>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Munka</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Helyszin)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Helyszin)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Datum)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Datum)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Leiras)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Leiras)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Gepjarmu)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Gepjarmu.Rendszam)
-        </dd class>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="MunkaId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+            <dt><strong>@Html.DisplayNameFor(model => model.Datum)</strong></dt>
+            <dd>@Html.DisplayFor(model => model.Datum)</dd>
+
+            <dt><strong>@Html.DisplayNameFor(model => model.Leiras)</strong></dt>
+            <dd>@Html.DisplayFor(model => model.Leiras)</dd>
+
+            <dt><strong>@Html.DisplayNameFor(model => model.Gepjarmu.Tipus)</strong></dt>
+            <dd>@Html.DisplayFor(model => model.Gepjarmu.Tipus)</dd>
+
+            <dt><strong>@Html.DisplayNameFor(model => model.Gepjarmu.Rendszam)</strong></dt>
+            <dd>@Html.DisplayFor(model => model.Gepjarmu.Rendszam)</dd>
+
+            <dt><strong>Dolgozók</strong></dt>
+            @foreach (var dolgozoitem in Model.DolgozoMunkak)
+            {
+                <dd>
+                    @Html.DisplayFor(csnev => dolgozoitem.Dolgozo.Csaladnev)
+                    @Html.Raw(" ")
+                    @Html.DisplayFor(knev => dolgozoitem.Dolgozo.Keresztnev)
+                </dd>
+            }
+        </dl>
+        @using (Html.BeginForm("Delete", "Home", FormMethod.Post))
+        {
+            @Html.HiddenFor(model => model.MunkaId)
+            <input type="submit" value="Törlés" class="delete-submit-button" />
+        }
+    </div>
 </div>

@@ -151,6 +151,7 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
 
             var munka = await _context.Munkak
                 .Include(m => m.Gepjarmu)
+                .Include(m => m.DolgozoMunkak).ThenInclude(dm => dm.Dolgozo)
                 .FirstOrDefaultAsync(m => m.MunkaId == id);
             if (munka == null)
             {
