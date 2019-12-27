@@ -69,9 +69,10 @@
                     @Html.Raw(")")<br />
                     @foreach (var dolgozoitem in item.DolgozoMunkak)
                     {
-                        @Html.Display(dolgozoitem.Dolgozo.Csaladnev)
+                        @Html.DisplayFor(csnev => dolgozoitem.Dolgozo.Csaladnev)
                         @Html.Raw(" ")
-                        @Html.Display(dolgozoitem.Dolgozo.Keresztnev)<br />
+                        @Html.DisplayFor(knev => dolgozoitem.Dolgozo.Keresztnev)
+                        @Html.Raw("; ")
                     }
                     @Html.Raw("</div>")
                     @Html.Raw("</div>")

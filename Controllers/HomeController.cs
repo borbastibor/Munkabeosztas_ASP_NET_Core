@@ -26,7 +26,7 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
                 .Include(m => m.Gepjarmu)
                 .Include(m => m.DolgozoMunkak).ThenInclude(dm => dm.Dolgozo);
             
-            HttpContext.Response.Headers.Add("refresh", "10; url=" + Url.Action("Index"));
+            HttpContext.Response.Headers.Add("refresh", "20; url=" + Url.Action("Index"));
             return View(await listview.ToListAsync());
         }
 
@@ -43,8 +43,6 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
         }
 
         // POST: Munkak/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MunkaViewModel munka)
@@ -110,8 +108,6 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
         }
 
         // POST: Munkak/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("MunkaId,Helyszin,Datum,Leiras,GepjarmuId")] Munka munka)
