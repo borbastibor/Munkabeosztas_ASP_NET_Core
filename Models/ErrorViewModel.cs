@@ -1,5 +1,3 @@
-using System;
-
 namespace Munkabeosztas_ASP_NET_Core.Models
 {
     public class ErrorViewModel

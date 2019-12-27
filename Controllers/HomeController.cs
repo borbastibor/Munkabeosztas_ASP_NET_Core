@@ -103,7 +103,12 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
             {
                 return NotFound();
             }
-            ViewData["GepjarmuId"] = new SelectList(_context.Gepjarmuvek, "GepjarmuId", "Rendszam", munka.GepjarmuId);
+            MunkaViewModel temp = new MunkaViewModel
+            {
+
+                GepjarmuList = GetGepjarmuvek(),
+                DolgozoList = GetDolgozokWithCheck()
+            };
             return View(munka);
         }
 

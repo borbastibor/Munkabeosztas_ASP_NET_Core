@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Munkabeosztas_ASP_NET_Core.Models
+﻿namespace Munkabeosztas_ASP_NET_Core.Models
 {
     public class DolgozoMunkaViewModel
     {
