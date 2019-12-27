@@ -155,21 +155,27 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
                 };
                 foreach (var item in munka.DolgozoList)
                 {
-                    if (item.IsChecked)
+                    var relship = new DolgozoMunka
                     {
-                        var relship = new DolgozoMunka
+                        MunkaId = munka.MunkaId,
+                        Munka = _context.Munkak.Find(munka.MunkaId),
+                        DolgozoId = item.DolgozoId,
+                        Dolgozo = _context.Dolgozok.Find(item.DolgozoId)
+                    };
+                    if (item.IsChecked && _context.Set<DolgozoMunka>().Find(relship) == null)
+                    {
+                        // Új kapcsolat létrehozása
+                    } else
+                    {
+                        if (!item.IsChecked && _context.Set<DolgozoMunka>().Find(relship) != null)
                         {
-                            MunkaId = munka.MunkaId,
-                            Munka = _context.Munkak.Find(munka.MunkaId),
-                            DolgozoId = item.DolgozoId,
-                            Dolgozo = _context.Dolgozok.Find(item.DolgozoId)
-                        };
-                        temp.DolgozoMunkak.Add(relship);
+                            // Meglévő kapcsolat törlése
+                        }
                     }
                 }
                 try
                 {
-                    _context.Update(temp);
+                    _context.Munkak.Update(temp);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
