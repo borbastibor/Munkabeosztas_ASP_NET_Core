@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Munkabeosztas_ASP_NET_Core.Data;
 using Munkabeosztas_ASP_NET_Core.Models;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Munkabeosztas_ASP_NET_Core.Controllers
 {
@@ -25,7 +25,7 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
             var listview = _context.Munkak
                 .Include(m => m.Gepjarmu)
                 .Include(m => m.DolgozoMunkak).ThenInclude(dm => dm.Dolgozo);
-            
+
             HttpContext.Response.Headers.Add("refresh", "20; url=" + Url.Action("Index"));
             return View(await listview.ToListAsync());
         }
@@ -76,7 +76,8 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
                         {
                             dolgozo.DolgozoMunkak.Add(relship);
                             _context.Set<Dolgozo>().Update(dolgozo);
-                        } else
+                        }
+                        else
                         {
                             return NotFound();
                         }
@@ -98,18 +99,37 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
                 return NotFound();
             }
 
-            var munka = await _context.Munkak.FindAsync(id);
+            var munka = await _context.Munkak
+                .Include(m => m.Gepjarmu)
+                .Include(m => m.DolgozoMunkak)
+                .ThenInclude(dm => dm.Dolgozo)
+                .FirstOrDefaultAsync(m => m.MunkaId == id);
             if (munka == null)
             {
                 return NotFound();
             }
+            List<DolgozoMunkaViewModel> dlist = GetDolgozokWithCheck();
+            foreach (var item in munka.DolgozoMunkak)
+            {
+                foreach (var inneritem in dlist)
+                {
+                    if (item.DolgozoId == inneritem.DolgozoId)
+                    {
+                        inneritem.IsChecked = true;
+                    }
+                }
+            }
             MunkaViewModel temp = new MunkaViewModel
             {
-
+                MunkaId = munka.MunkaId,
+                Datum = munka.Datum,
+                Helyszin = munka.Helyszin,
+                Leiras = munka.Leiras,
+                SelectedGepjarmu = munka.Gepjarmu.GepjarmuId.ToString(),
                 GepjarmuList = GetGepjarmuvek(),
-                DolgozoList = GetDolgozokWithCheck()
+                DolgozoList = dlist
             };
-            return View(munka);
+            return View(temp);
         }
 
         // POST: Munkak/Edit/5
