@@ -49,7 +49,7 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Új munka létrehozása és commit, hogy legyen munkaid, amire hivatkozok
+                // Új munka létrehozása és commit, hogy legyen munkaId, amire hivatkozok
                 Munka ujmunka = new Munka
                 {
                     Helyszin = munka.Helyszin,
@@ -163,7 +163,7 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
                         DolgozoId = item.DolgozoId,
                         Dolgozo = _context.Dolgozok.Find(item.DolgozoId)
                     };
-                    var temprelship = _context.Set<DolgozoMunka>().Find(relship);
+                    var temprelship = _context.Set<DolgozoMunka>().Find(relship.DolgozoId, relship.MunkaId);
                     if (item.IsChecked &&  temprelship == null)
                     {
                         // Új kapcsolat létrehozása
