@@ -49,6 +49,7 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Új munka létrehozása és commit, hogy legyen munkaid, amire hivatkozok
                 Munka ujmunka = new Munka
                 {
                     Helyszin = munka.Helyszin,
@@ -59,6 +60,7 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
                 };
                 _context.Set<Munka>().Add(ujmunka);
                 await _context.SaveChangesAsync();
+                // Több a többhöz kapcsolatok létrehozása
                 foreach (var item in munka.DolgozoList)
                 {
                     if (item.IsChecked)
@@ -144,15 +146,14 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
 
             if (ModelState.IsValid)
             {
-                Munka temp = new Munka
-                {
-                    MunkaId = munka.MunkaId,
-                    Helyszin = munka.Helyszin,
-                    Leiras = munka.Leiras,
-                    Datum = munka.Datum,
-                    Gepjarmu = _context.Gepjarmuvek.Find(int.Parse(munka.SelectedGepjarmu)),
-                    GepjarmuId = int.Parse(munka.SelectedGepjarmu)
-                };
+                // Munka rekord frissítése
+                var editedmunka = _context.Munkak.Find(id);
+                editedmunka.Datum = munka.Datum;
+                editedmunka.Helyszin = munka.Helyszin;
+                editedmunka.Leiras = munka.Leiras;
+                editedmunka.GepjarmuId = int.Parse(munka.SelectedGepjarmu);
+                editedmunka.Gepjarmu = _context.Gepjarmuvek.Find(int.Parse(munka.SelectedGepjarmu));
+                // Dolgozo-Munka kapcsolat frissítése
                 foreach (var item in munka.DolgozoList)
                 {
                     var relship = new DolgozoMunka
@@ -162,25 +163,53 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
                         DolgozoId = item.DolgozoId,
                         Dolgozo = _context.Dolgozok.Find(item.DolgozoId)
                     };
-                    if (item.IsChecked && _context.Set<DolgozoMunka>().Find(relship) == null)
+                    var temprelship = _context.Set<DolgozoMunka>().Find(relship);
+                    if (item.IsChecked &&  temprelship == null)
                     {
                         // Új kapcsolat létrehozása
+                        _context.Set<DolgozoMunka>().Add(relship);
+                        var dolgozo = _context.Dolgozok.Find(item.DolgozoId);
+                        if (dolgozo != null)
+                        {
+                            dolgozo.DolgozoMunkak.Add(relship);
+                            _context.Set<Dolgozo>().Update(dolgozo);
+                        }
+                        else
+                        {
+                            return NotFound();
+                        }
+                        editedmunka.DolgozoMunkak.Add(relship);
+                        _context.Munkak.Update(editedmunka);
+
                     } else
                     {
-                        if (!item.IsChecked && _context.Set<DolgozoMunka>().Find(relship) != null)
+                        if (!item.IsChecked && temprelship != null)
                         {
                             // Meglévő kapcsolat törlése
+                            _context.Set<DolgozoMunka>().Remove(relship);
+                            var dolgozo = _context.Dolgozok.Find(item.DolgozoId);
+                            if (dolgozo != null)
+                            {
+                                dolgozo.DolgozoMunkak.Remove(relship);
+                                _context.Set<Dolgozo>().Update(dolgozo);
+                            }
+                            else
+                            {
+                                return NotFound();
+                            }
+                            editedmunka.DolgozoMunkak.Add(relship);
+                            _context.Munkak.Update(editedmunka);
                         }
                     }
                 }
                 try
                 {
-                    _context.Munkak.Update(temp);
+                    //_context.Munkak.Update(editedmunka);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MunkaExists(temp.MunkaId))
+                    if (!MunkaExists(editedmunka.MunkaId))
                     {
                         return NotFound();
                     }
