@@ -163,7 +163,9 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
                         DolgozoId = item.DolgozoId,
                         Dolgozo = _context.Dolgozok.Find(item.DolgozoId)
                     };
-                    var temprelship = _context.Set<DolgozoMunka>().Find(relship.DolgozoId, relship.MunkaId);
+                    var temprelship = _context.Set<DolgozoMunka>()
+                        .Where(dm => dm.DolgozoId == relship.DolgozoId && dm.MunkaId == relship.MunkaId)
+                        .FirstOrDefault();
                     if (item.IsChecked &&  temprelship == null)
                     {
                         // Új kapcsolat létrehozása
@@ -187,17 +189,17 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
                         {
                             // Meglévő kapcsolat törlése
                             _context.Set<DolgozoMunka>().Remove(relship);
-                            var dolgozo = _context.Dolgozok.Find(item.DolgozoId);
-                            if (dolgozo != null)
-                            {
-                                dolgozo.DolgozoMunkak.Remove(relship);
-                                _context.Set<Dolgozo>().Update(dolgozo);
-                            }
-                            else
-                            {
-                                return NotFound();
-                            }
-                            editedmunka.DolgozoMunkak.Add(relship);
+                            //var dolgozo = _context.Dolgozok.Find(item.DolgozoId);
+                            //if (dolgozo != null)
+                            //{
+                            //    dolgozo.DolgozoMunkak.Remove(relship);
+                            //    _context.Set<Dolgozo>().Update(dolgozo);
+                            //}
+                            //else
+                            //{
+                            //    return NotFound();
+                            //}
+                            editedmunka.DolgozoMunkak.Remove(relship);
                             _context.Munkak.Update(editedmunka);
                         }
                     }
