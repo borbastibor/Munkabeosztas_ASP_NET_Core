@@ -147,30 +147,41 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
             if (ModelState.IsValid)
             {
                 // Munka rekord frissítése
-                var editedmunka = _context.Munkak.Find(id);
+                var editedmunka = await _context.Munkak
+                    .Include(m => m.Gepjarmu)
+                    .Include(m => m.DolgozoMunkak).ThenInclude(dm => dm.Dolgozo)
+                    .FirstOrDefaultAsync(m => m.MunkaId == id);
+
+                if (editedmunka == null)
+                {
+                    return NotFound();
+                }
+
                 editedmunka.Datum = munka.Datum;
                 editedmunka.Helyszin = munka.Helyszin;
                 editedmunka.Leiras = munka.Leiras;
                 editedmunka.GepjarmuId = int.Parse(munka.SelectedGepjarmu);
-                editedmunka.Gepjarmu = _context.Gepjarmuvek.Find(int.Parse(munka.SelectedGepjarmu));
+                editedmunka.Gepjarmu = await _context.Gepjarmuvek.FindAsync(int.Parse(munka.SelectedGepjarmu));
+
                 // Dolgozo-Munka kapcsolat frissítése
                 foreach (var item in munka.DolgozoList)
                 {
                     var relship = new DolgozoMunka
                     {
                         MunkaId = munka.MunkaId,
-                        Munka = _context.Munkak.Find(munka.MunkaId),
+                        Munka = await _context.Set<Munka>().FindAsync(munka.MunkaId),
                         DolgozoId = item.DolgozoId,
-                        Dolgozo = _context.Dolgozok.Find(item.DolgozoId)
+                        Dolgozo = await _context.Set<Dolgozo>().FindAsync(item.DolgozoId)
                     };
-                    var temprelship = _context.Set<DolgozoMunka>()
-                        .Where(dm => dm.DolgozoId == relship.DolgozoId && dm.MunkaId == relship.MunkaId)
-                        .FirstOrDefault();
-                    if (item.IsChecked &&  temprelship == null)
+
+                    bool relshipExists = await _context.Set<DolgozoMunka>()
+                        .AnyAsync(dm => dm.DolgozoId == item.DolgozoId && dm.MunkaId == munka.MunkaId);
+
+                    if (item.IsChecked && !relshipExists)
                     {
                         // Új kapcsolat létrehozása
-                        _context.Set<DolgozoMunka>().Add(relship);
-                        var dolgozo = _context.Dolgozok.Find(item.DolgozoId);
+                        await _context.Set<DolgozoMunka>().AddAsync(relship);
+                        var dolgozo = await _context.Dolgozok.FindAsync(item.DolgozoId);
                         if (dolgozo != null)
                         {
                             dolgozo.DolgozoMunkak.Add(relship);
@@ -181,26 +192,15 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
                             return NotFound();
                         }
                         editedmunka.DolgozoMunkak.Add(relship);
-                        _context.Munkak.Update(editedmunka);
 
                     } else
                     {
-                        if (!item.IsChecked && temprelship != null)
+                        if (!item.IsChecked && relshipExists)
                         {
                             // Meglévő kapcsolat törlése
-                            _context.Set<DolgozoMunka>().Remove(relship);
-                            //var dolgozo = _context.Dolgozok.Find(item.DolgozoId);
-                            //if (dolgozo != null)
-                            //{
-                            //    dolgozo.DolgozoMunkak.Remove(relship);
-                            //    _context.Set<Dolgozo>().Update(dolgozo);
-                            //}
-                            //else
-                            //{
-                            //    return NotFound();
-                            //}
-                            editedmunka.DolgozoMunkak.Remove(relship);
-                            _context.Munkak.Update(editedmunka);
+                            var temp = await _context.Set<DolgozoMunka>()
+                                .FindAsync(item.DolgozoId, munka.MunkaId);
+                            editedmunka.DolgozoMunkak.Remove(temp);
                         }
                     }
                 }
