@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.IISIntegration;
@@ -28,6 +29,7 @@ namespace Munkabeosztas_ASP_NET_Core
             services.AddAuthorization(options => {
                 options.AddPolicy("HasName", policy => policy.Requirements.Add(new HasNameRequirement()));
             });
+            services.AddTransient<IAuthorizationHandler, HasNameHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
