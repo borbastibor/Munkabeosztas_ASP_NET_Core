@@ -1,10 +1,15 @@
-﻿@model IEnumerable<Munkabeosztas_ASP_NET_Core.Models.Munka>
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@model IEnumerable<Munkabeosztas_ASP_NET_Core.Models.Munka>
 @{
     ViewData["Title"] = "Munkabeosztás";
 }
 
-@await Html.PartialAsync("_AdminMenuPartial")
-@Html.ActionLink("+", "Create", "Home", null, new { @class = "create-button" })
+@if ((await AuthorizationService.AuthorizeAsync(User, "HasName")).Succeeded)
+{
+    @await Html.PartialAsync("_AdminMenuPartial")
+    @Html.ActionLink("+", "Create", "Home", null, new { @class = "create-button" })
+}
 
 <table class="calendar-container">
     <tr>
@@ -41,44 +46,44 @@
     <tr>
         @for (int i = 0; i < 7; i++)
         {
-        <td class="calendar-cell">
-            @foreach (var item in Model)
-            {
-                var itemdate = DateTime.ParseExact(item.Datum, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-                if (DateTime.Compare(itemdate, currentdate.AddDays(i)) == 0)
+            <td class="calendar-cell">
+                @foreach (var item in Model)
                 {
-                    @Html.Raw("<div class=\"tag-container\">")
-                    @Html.Raw("<div class=\"tag-title-container\">")
-                    @Html.Raw("<table class=\"tag-title-table\">")
-                    @Html.Raw("<tr>")
-                    @Html.Raw("<td class=\"tag-title-tablecell\">")
-                    @Html.ActionLink("Szerkeszt", "Edit", "Home", new { id = item.MunkaId }, new { @class = "tag-title-menuitem" })
-                    @Html.Raw("</td>")
-                    @Html.Raw("<td class=\"tag-title-tablecell\">")
-                    @Html.ActionLink("Eltávolít", "Delete", "Home", new { id = item.MunkaId }, new { @class = "tag-title-menuitem" })
-                    @Html.Raw("</td>")
-                    @Html.Raw("</tr>")
-                    @Html.Raw("</table>")
-                    @Html.Raw("</div>")
-                    @Html.Raw("<div class=\"tag-body\">")
-                    @Html.DisplayFor(modelItem => item.Helyszin)<br />
-                    @Html.DisplayFor(modelItem => item.Leiras)<br />
-                    @Html.DisplayFor(modelItem => item.Gepjarmu.Tipus)
-                    @Html.Raw(" (")
-                    @Html.DisplayFor(modelItem => item.Gepjarmu.Rendszam)
-                    @Html.Raw(")")<br />
-                    @foreach (var dolgozoitem in item.DolgozoMunkak)
+                    var itemdate = DateTime.ParseExact(item.Datum, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+                    if (DateTime.Compare(itemdate, currentdate.AddDays(i)) == 0)
                     {
-                        @Html.DisplayFor(csnev => dolgozoitem.Dolgozo.Csaladnev)
-                        @Html.Raw(" ")
-                        @Html.DisplayFor(knev => dolgozoitem.Dolgozo.Keresztnev)
-                        @Html.Raw("; ")
+                        @Html.Raw("<div class=\"tag-container\">")
+                        @Html.Raw("<div class=\"tag-title-container\">")
+                        @Html.Raw("<table class=\"tag-title-table\">")
+                        @Html.Raw("<tr>")
+                        @Html.Raw("<td class=\"tag-title-tablecell\">")
+                        @Html.ActionLink("Szerkeszt", "Edit", "Home", new { id = item.MunkaId }, new { @class = "tag-title-menuitem" })
+                        @Html.Raw("</td>")
+                        @Html.Raw("<td class=\"tag-title-tablecell\">")
+                        @Html.ActionLink("Eltávolít", "Delete", "Home", new { id = item.MunkaId }, new { @class = "tag-title-menuitem" })
+                        @Html.Raw("</td>")
+                        @Html.Raw("</tr>")
+                        @Html.Raw("</table>")
+                        @Html.Raw("</div>")
+                        @Html.Raw("<div class=\"tag-body\">")
+                        @Html.DisplayFor(modelItem => item.Helyszin)<br />
+                        @Html.DisplayFor(modelItem => item.Leiras)<br />
+                        @Html.DisplayFor(modelItem => item.Gepjarmu.Tipus)
+                        @Html.Raw(" (")
+                        @Html.DisplayFor(modelItem => item.Gepjarmu.Rendszam)
+                        @Html.Raw(")")<br />
+                        @foreach (var dolgozoitem in item.DolgozoMunkak)
+                        {
+                            @Html.DisplayFor(csnev => dolgozoitem.Dolgozo.Csaladnev)
+                            @Html.Raw(" ")
+                            @Html.DisplayFor(knev => dolgozoitem.Dolgozo.Keresztnev)
+                            @Html.Raw("; ")
+                        }
+                        @Html.Raw("</div>")
+                        @Html.Raw("</div>")
                     }
-                    @Html.Raw("</div>")
-                    @Html.Raw("</div>")
                 }
-            }
-        </td>
+            </td>
         }
     </tr>
 </table>

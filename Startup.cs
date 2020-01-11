@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,10 @@ namespace Munkabeosztas_ASP_NET_Core
             services.AddDbContext<MunkabeosztasDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllersWithViews();
+            services.AddAuthentication(IISDefaults.AuthenticationScheme);
+            services.AddAuthorization(options => {
+                options.AddPolicy("HasName", policy => policy.Requirements.Add(new HasNameRequirement()));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,6 +44,8 @@ namespace Munkabeosztas_ASP_NET_Core
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            //app.UseAuthentication();
 
             app.UseAuthorization();
 
