@@ -16,7 +16,8 @@ namespace Munkabeosztas_ASP_NET_Core
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, HasNameRequirement requirement)
         {
-            var name = context.User.Identity.Name;
+            var name = context.User.Identity.Name.Split('\\').Last();
+            //var name = context.User.Identity.Name;
             bool isAdmin = _context.Adminusers.Any(u => u.Username == name);
             if (name != null && name != "" && isAdmin)
             {
