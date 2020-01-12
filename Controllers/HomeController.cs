@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Munkabeosztas_ASP_NET_Core.Data;
 using Munkabeosztas_ASP_NET_Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -13,19 +14,33 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
     public class HomeController : Controller
     {
         private readonly MunkabeosztasDbContext _context;
+        private DateTime _tableStart;
 
         public HomeController(MunkabeosztasDbContext context)
         {
             _context = context;
+            _tableStart = DateTime.Now.Date;
         }
 
         // GET: Munkak
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? direction)
         {
+            if (direction != null)
+            {
+                if (direction == 1)
+                {
+                    _tableStart = _tableStart.AddDays(7);
+                }
+
+                if (direction == -1)
+                {
+                    _tableStart = _tableStart.AddDays(-7);
+                }
+            }
             var listview = _context.Munkak
                 .Include(m => m.Gepjarmu)
                 .Include(m => m.DolgozoMunkak).ThenInclude(dm => dm.Dolgozo);
-
+            ViewData["startDate"] = _tableStart.ToString("yyyy-MM-dd");
             HttpContext.Response.Headers.Add("refresh", "20; url=" + Url.Action("Index"));
             return View(await listview.ToListAsync());
         }

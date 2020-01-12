@@ -11,13 +11,13 @@
     @Html.ActionLink("+", "Create", "Home", null, new { @class = "create-button" })
 }
 
-@Html.ActionLink("«", "Index", "Home", null, new { @class = "leftshift-button" })
-@Html.ActionLink("»", "Index", "Home", null, new { @class = "rightshift-button" })
+@Html.ActionLink("«", "Index", "Home", new { @direction = -1 }, new { @class = "leftshift-button" })
+@Html.ActionLink("»", "Index", "Home", new { @direction = 1 }, new { @class = "rightshift-button" })
 
 <table class="calendar-container">
     <tr>
         @{
-            DateTime currentdate = DateTime.Now.Date;
+            DateTime currentdate = DateTime.ParseExact((string)ViewData["startDate"], "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
 
             for (int i = 0; i < 7; i++)
             {
