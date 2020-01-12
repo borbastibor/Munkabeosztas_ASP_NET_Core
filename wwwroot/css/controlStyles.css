@@ -97,6 +97,7 @@
     opacity: 0.25;
     font-size: 28px;
     font-weight: bold;
+    text-decoration: none;
     z-index: 1;
 }
 
@@ -115,6 +116,7 @@
     opacity: 0.25;
     font-size: 28px;
     font-weight: bolder;
+    text-decoration: none;
     z-index: 1;
 }
 

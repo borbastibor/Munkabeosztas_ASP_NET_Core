@@ -11,6 +11,9 @@
     @Html.ActionLink("+", "Create", "Home", null, new { @class = "create-button" })
 }
 
+@Html.ActionLink("«", "Index", "Home", null, new { @class = "leftshift-button" })
+@Html.ActionLink("»", "Index", "Home", null, new { @class = "rightshift-button" })
+
 <table class="calendar-container">
     <tr>
         @{
