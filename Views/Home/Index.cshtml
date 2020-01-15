@@ -3,21 +3,32 @@
 @model IEnumerable<Munkabeosztas_ASP_NET_Core.Models.Munka>
 @{
     ViewData["Title"] = "Munkabeosztás";
+    bool isAdmin = false;
 }
 
 @if ((await AuthorizationService.AuthorizeAsync(User, "HasName")).Succeeded)
+{
+    isAdmin = true;
+}
+
+@if (isAdmin)
 {
     @await Html.PartialAsync("_AdminMenuPartial")
     @Html.ActionLink("+", "Create", "Home", null, new { @class = "create-button" })
 }
 
-@Html.ActionLink("«", "Index", "Home", new { @direction = -1 }, new { @class = "leftshift-button" })
-@Html.ActionLink("»", "Index", "Home", new { @direction = 1 }, new { @class = "rightshift-button" })
-
+@*<div class="sdate-container">
+    @using (Html.BeginForm("SetStartDate", "Home", FormMethod.Post))
+    {
+        @Html.TextBox("startdate", null, new { @type = "date", @class = "sdate-chooser" })
+        <input type="submit" class="save-submit-button" name="Save" value="Ugrás" />
+    }
+</div>
+@ViewData["startDate"]*@
 <table class="calendar-container">
     <tr>
         @{
-            DateTime currentdate = DateTime.ParseExact((string)ViewData["startDate"], "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+            DateTime currentdate = DateTime.ParseExact(ViewData["startDate"].ToString(), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
 
             for (int i = 0; i < 7; i++)
             {
@@ -54,18 +65,21 @@
                     if (DateTime.Compare(itemdate, currentdate.AddDays(i)) == 0)
                     {
                         @Html.Raw("<div class=\"tag-container\">")
-                        @Html.Raw("<div class=\"tag-title-container\">")
-                        @Html.Raw("<table class=\"tag-title-table\">")
-                        @Html.Raw("<tr>")
-                        @Html.Raw("<td class=\"tag-title-tablecell\">")
-                        @Html.ActionLink("Szerkeszt", "Edit", "Home", new { id = item.MunkaId }, new { @class = "tag-title-menuitem" })
-                        @Html.Raw("</td>")
-                        @Html.Raw("<td class=\"tag-title-tablecell\">")
-                        @Html.ActionLink("Eltávolít", "Delete", "Home", new { id = item.MunkaId }, new { @class = "tag-title-menuitem" })
-                        @Html.Raw("</td>")
-                        @Html.Raw("</tr>")
-                        @Html.Raw("</table>")
-                        @Html.Raw("</div>")
+                        if (isAdmin)
+                        {
+                            @Html.Raw("<div class=\"tag-title-container\">")
+                            @Html.Raw("<table class=\"tag-title-table\">")
+                            @Html.Raw("<tr>")
+                            @Html.Raw("<td class=\"tag-title-tablecell\">")
+                            @Html.ActionLink("Szerkeszt", "Edit", "Home", new { id = item.MunkaId }, new { @class = "tag-title-menuitem" })
+                            @Html.Raw("</td>")
+                            @Html.Raw("<td class=\"tag-title-tablecell\">")
+                            @Html.ActionLink("Eltávolít", "Delete", "Home", new { id = item.MunkaId }, new { @class = "tag-title-menuitem" })
+                            @Html.Raw("</td>")
+                            @Html.Raw("</tr>")
+                            @Html.Raw("</table>")
+                            @Html.Raw("</div>")
+                        }
                         @Html.Raw("<div class=\"tag-body\">")
                         @Html.DisplayFor(modelItem => item.Helyszin)<br />
                         @Html.DisplayFor(modelItem => item.Leiras)<br />

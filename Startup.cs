@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -46,8 +47,6 @@ namespace Munkabeosztas_ASP_NET_Core
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            //app.UseAuthentication();
 
             app.UseAuthorization();
 

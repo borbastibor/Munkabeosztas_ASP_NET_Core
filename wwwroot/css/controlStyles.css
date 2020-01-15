@@ -86,9 +86,9 @@
     background-color: rgba(255,0,0,0.5);
 }
 
-.leftshift-button {
+.sdate-container {
     position: fixed;
-    width: auto;
+    width: 20%;
     padding: 0px 5px;
     bottom: 5px;
     left: 5px;
@@ -98,29 +98,10 @@
     font-size: 28px;
     font-weight: bold;
     text-decoration: none;
-    z-index: 1;
+    z-index: 3;
 }
 
-.leftshift-button:hover {
-    opacity: 1;
-}
-
-.rightshift-button {
-    position: fixed;
-    width: auto;
-    padding: 0px 5px;
-    bottom: 5px;
-    right: 5px;
-    background-color: rgb(50,50,50);
-    color: white;
-    opacity: 0.25;
-    font-size: 28px;
-    font-weight: bolder;
-    text-decoration: none;
-    z-index: 1;
-}
-
-.rightshift-button:hover {
+.sdate-container:hover {
     opacity: 1;
 }
 
@@ -157,6 +138,16 @@ input[type=text], input[type=date], select {
     border-radius: 4px;
     box-sizing: border-box;
  }
+
+input[type=date].sdate-chooser {
+    width: 100%;
+    padding: 5px 10px;
+    margin: 5px 0;
+    display: inline-block;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
 
 input[type=submit].save-submit-button {
     width: 100%;

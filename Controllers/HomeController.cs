@@ -23,23 +23,12 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
         }
 
         // GET: Munkak
-        public async Task<IActionResult> Index(int? direction)
+        public async Task<IActionResult> Index()
         {
-            if (direction != null)
-            {
-                if (direction == 1)
-                {
-                    _tableStart = _tableStart.AddDays(7);
-                }
-
-                if (direction == -1)
-                {
-                    _tableStart = _tableStart.AddDays(-7);
-                }
-            }
             var listview = _context.Munkak
                 .Include(m => m.Gepjarmu)
                 .Include(m => m.DolgozoMunkak).ThenInclude(dm => dm.Dolgozo);
+
             ViewData["startDate"] = _tableStart.ToString("yyyy-MM-dd");
             HttpContext.Response.Headers.Add("refresh", "20; url=" + Url.Action("Index"));
             return View(await listview.ToListAsync());
@@ -208,7 +197,8 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
                         }
                         editedmunka.DolgozoMunkak.Add(relship);
 
-                    } else
+                    } 
+                    else
                     {
                         if (!item.IsChecked && relshipExists)
                         {
@@ -275,6 +265,14 @@ namespace Munkabeosztas_ASP_NET_Core.Controllers
                 _context.Munkak.Remove(munka);
             }
             await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SetStartDate(string startdate)
+        {
+            _tableStart = DateTime.ParseExact(startdate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
             return RedirectToAction(nameof(Index));
         }
 
